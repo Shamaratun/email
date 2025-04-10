@@ -46,7 +46,7 @@ public class EmailService {
 		email.writeTo(buffer);
 		byte[] bytes = buffer.toByteArray();
 		String encodedEmail = Base64.encodeBase64URLSafeString(bytes);
-
+                                        
 		Message message = new Message();
 		message.setRaw(encodedEmail);
 
