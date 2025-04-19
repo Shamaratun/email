@@ -2,6 +2,7 @@ package org.isdb.email.controller;
 
 
 import org.isdb.email.config.JwtTokenProvider;
+import org.isdb.email.model.CustomUserDetails;
 import org.isdb.email.model.LoginRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,12 +29,16 @@ public class AuthController {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
     }
-
+    
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.username(), loginRequest.password())
         );
+        Object principal = authentication.getPrincipal();
+    if (principal instanceof CustomUserDetails) {
+        System.out.println("User is instance of CustomUserDetails");
+    }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtTokenProvider.createToken(authentication);
@@ -44,5 +49,6 @@ public class AuthController {
 
         return ResponseEntity.ok(response);
     }
+
 
 }
