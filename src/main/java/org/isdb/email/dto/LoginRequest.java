@@ -1,4 +1,5 @@
-package org.isdb.email.model;
+package org.isdb.email.dto;
+
 
 import jakarta.validation.constraints.NotBlank;
 
