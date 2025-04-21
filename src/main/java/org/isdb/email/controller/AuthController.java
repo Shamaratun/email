@@ -50,10 +50,12 @@ public class AuthController {
             User user = new User(
                     registerRequest.email(),
                     registerRequest.password(),
-                    Role.STUDENT, // Default role for registration
+                    registerRequest.role(),
                     registerRequest.firstName(),
                     registerRequest.lastName(),
                     registerRequest.phoneNumber()
+                    
+
             );
 
             User savedUser = userService.createUser(user);
@@ -66,7 +68,8 @@ public class AuthController {
             userResponse.setFirstName(savedUser.getFirstName());
             userResponse.setLastName(savedUser.getLastName());
             userResponse.setPhoneNumber(savedUser.getPhoneNumber());
-
+            userResponse.setCreatedAt(savedUser.getCreatedAt());
+            userResponse.setUpdatedAt(savedUser.getUpdatedAt());
             return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
