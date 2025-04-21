@@ -3,8 +3,7 @@ package org.isdb.email.config;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.isdb.email.model.CustomUser;
-import org.isdb.email.repository.MapCustomUserRepository;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
