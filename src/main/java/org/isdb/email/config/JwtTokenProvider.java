@@ -20,7 +20,6 @@ public class JwtTokenProvider {
     @Value("${app.jwt.expiration}")
     private int jwtExpirationMs;
 
-
     public String createToken(Authentication authentication) {
         CustomUserDetails userPrincipal = (CustomUserDetails) authentication.getPrincipal();
 

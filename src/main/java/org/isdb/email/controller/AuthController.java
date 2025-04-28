@@ -1,6 +1,5 @@
 package org.isdb.email.controller;
 
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -26,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -35,8 +35,8 @@ public class AuthController {
     private final UserService userService;
 
     public AuthController(AuthenticationManager authenticationManager,
-                          JwtTokenProvider jwtTokenProvider,
-                          UserService userService) {
+            JwtTokenProvider jwtTokenProvider,
+            UserService userService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userService = userService;
@@ -44,8 +44,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(
-            @Valid @RequestBody RegisterRequest registerRequest
-    ) {
+            @Valid @RequestBody RegisterRequest registerRequest) {
         try {
             User user = new User(
                     registerRequest.email(),
@@ -53,10 +52,7 @@ public class AuthController {
                     registerRequest.role(),
                     registerRequest.firstName(),
                     registerRequest.lastName(),
-                    registerRequest.phoneNumber()
-                    
-
-            );
+                    registerRequest.phoneNumber());
 
             User savedUser = userService.createUser(user);
 
@@ -68,8 +64,7 @@ public class AuthController {
             userResponse.setFirstName(savedUser.getFirstName());
             userResponse.setLastName(savedUser.getLastName());
             userResponse.setPhoneNumber(savedUser.getPhoneNumber());
-            userResponse.setCreatedAt(savedUser.getCreatedAt());
-            userResponse.setUpdatedAt(savedUser.getUpdatedAt());
+
             return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -78,12 +73,11 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(HttpServletRequest request,
-                                              HttpServletResponse response,
-                                              @Valid @RequestBody LoginRequest loginRequest) {
+            HttpServletResponse response,
+            @Valid @RequestBody LoginRequest loginRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.password())
-            );
+                    new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.password()));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = jwtTokenProvider.createToken(authentication);
@@ -94,7 +88,7 @@ public class AuthController {
 
             // Create response with token and user info
             Map<String, Object> responseData = new HashMap<>();
-            responseData.put("token", jwt);
+            responseData.put("access_token", jwt);
             responseData.put("tokenType", "Bearer");
 
             // Add user information

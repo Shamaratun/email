@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 import org.isdb.email.validator.RoleValidator;
 
 import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
 
 @Target({ ElementType.FIELD, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
